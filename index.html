@@ -63,11 +63,11 @@ var myName = prompt("Enter your name");
         // give each message a unique ID
         html += "<li id='message-" + snapshot.key + "'>";
         // show delete button if message is sent by me
-        if (snapshot.val().sender == myName) {
+       /* if (snapshot.val().sender == myName) {
             html += "<button data-id='" + snapshot.key + "' onclick='deleteMessage(this);'>";
                 html += "Delete";
             html += "</button>";
-        }
+        }*/
         html += snapshot.val().sender + ": " + snapshot.val().message;
         html += "</li>";
  
