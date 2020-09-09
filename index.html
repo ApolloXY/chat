@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <title>Chat</title>
 <link rel="stylesheet" href="chat.css">
-</head>
- 
-<body>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
 
@@ -16,6 +13,19 @@
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+
+</head>
+ 
+<body>
+
+<!-- create a form to send message -->
+<form onsubmit="return sendMessage();">
+    <input id="message" placeholder="Enter message" autocomplete="off">
+     <input type="submit">
+</form>
+</body>
 
 <script>
   // Your web app's Firebase configuration
@@ -32,27 +42,22 @@
   firebase.initializeApp(firebaseConfig);
 	
   var myName = prompt("Enter your name");
-
-function sendMessage(){
-//get message
-var message = document.getElementByID("message").value;
-
-//save in database
-firebase.database().ref("messages").push().set({
-"sender" : myName,
-"message" : message
-});
-
-//prevent form from submitting
-return false; 
-}
 </script>
 
-<!-- Create a form to send message -->
-<form onsubmit="return sendMessage();">
-<input id="message" placeholder="Enter message" autocomplete="off">
-<input type="submit">
-</form>
-</body>
+<script>
+    function sendMessage() {
+        // get message
+        var message = document.getElementById("message").value;
+ 
+        // save in database
+        firebase.database().ref("messages").push().set({
+            "sender": myName,
+            "message": message
+        });
+ 
+        // prevent form from submitting
+        return false;
+    }
+</script>
 <script  type="text/javascript" src="chat.js"></script>
 </html>
