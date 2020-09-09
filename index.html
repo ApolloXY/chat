@@ -1,21 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="utf-8">
 <title>Chat</title>
 <link rel="stylesheet" href="chat.css">
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
-
-<!-- include firebase database -->
-<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
-
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-
-
-
 </head>
  
 <body>
@@ -25,25 +14,31 @@
     <input id="message" placeholder="Enter message" autocomplete="off">
      <input type="submit">
 </form>
+
+<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+
+<!-- create a list -->
+<ul id="messages"></ul>
+<script  type="text/javascript" src="chat.js"></script>
 </body>
 
 <script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyANtN0D5DLcRTOEZr3tQBBn7e6nePQAVSU",
-    authDomain: "chat-c565a.firebaseapp.com",
-    databaseURL: "https://chat-c565a.firebaseio.com",
-    projectId: "chat-c565a",
-    storageBucket: "chat-c565a.appspot.com",
-    messagingSenderId: "582626485202",
-    appId: "1:582626485202:web:04cb2b68cea057a9949e0b"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-	
-  var myName = prompt("Enter your name");
-</script>
+var firebaseConfig = {
+apiKey: "AIzaSyANtN0D5DLcRTOEZr3tQBBn7e6nePQAVSU",
+authDomain: "chat-c565a.firebaseapp.com",
+databaseURL: "https://chat-c565a.firebaseio.com",
+projectId: "chat-c565a",
+storageBucket: "chat-c565a.appspot.com",
+messagingSenderId: "582626485202",
+appId: "1:582626485202:web:04cb2b68cea057a9949e0b"
+};
+ 
+firebase.initializeApp(firebaseConfig);
 
+var myName = prompt("Enter your name");
+	
+</script>
 <script>
     function sendMessage() {
         // get message
@@ -58,6 +53,25 @@
         // prevent form from submitting
         return false;
     }
+
+
 </script>
-<script  type="text/javascript" src="chat.js"></script>
+<script>
+    // listen for incoming messages
+    firebase.database().ref("messages").on("child_added", function (snapshot) {
+        var html = "";
+        // give each message a unique ID
+        html += "<li id='message-" + snapshot.key + "'>";
+        // show delete button if message is sent by me
+        if (snapshot.val().sender == myName) {
+            html += "<button data-id='" + snapshot.key + "' onclick='deleteMessage(this);'>";
+                html += "Delete";
+            html += "</button>";
+        }
+        html += snapshot.val().sender + ": " + snapshot.val().message;
+        html += "</li>";
+ 
+        document.getElementById("messages").innerHTML += html;
+    });
+</script>
 </html>
