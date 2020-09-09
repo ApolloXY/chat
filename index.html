@@ -73,5 +73,19 @@ var myName = prompt("Enter your name");
  
         document.getElementById("messages").innerHTML += html;
     });
+	
+	function deleteMessage(self) {
+    // get message ID
+    var messageId = self.getAttribute("data-id");
+ 
+    // delete message
+    firebase.database().ref("messages").child(messageId).remove();
+}
+ 
+// attach listener for delete message
+firebase.database().ref("messages").on("child_removed", function (snapshot) {
+    // remove message node
+    document.getElementById("message-" + snapshot.key).innerHTML = "This message has been removed";
+});
 </script>
 </html>
